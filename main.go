@@ -73,6 +73,21 @@ func (ocr ocrApi) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	api.SetImage2(image)
 	// outText := api.GetUTF8Text()
 	boxa := api.GetComponentImages(tesseract.RIL_TEXTLINE, true, nil, nil)
+	if boxa == nil {
+		res := ocrApiResponse{
+			Code:      -1,
+			Message:   "can't get any text",
+			RequestId: uuid.NewString(),
+		}
+		text, err := json.Marshal(res)
+		if err != nil {
+			rw.WriteHeader(500)
+			rw.Write([]byte("can't marshal response: " + err.Error()))
+			return
+		}
+		rw.Write(text)
+		return
+	}
 	outData := make([]ocrApiDataItem, boxa.N)
 	for i := int32(0); i < boxa.N; i++ {
 		box := boxa.GetBox(i, leptonica.L_CLONE)

@@ -4,7 +4,6 @@ package leptonica
 #cgo pkg-config: lept
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <leptonica/allheaders.h>
 */
 import "C"
