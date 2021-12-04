@@ -70,7 +70,7 @@ func (api *TessBaseAPI) SetRectangle(left, top, width, height int32) {
 func (api *TessBaseAPI) GetComponentImages(
 	level TessPageIteratorLevel, text_only bool,
 	_pixa interface{}, _blockids interface{}) *leptonica.Boxa {
-	var textOnly C.int = 0
+	textOnly := C.int(0)
 	if text_only {
 		textOnly = 1
 	}

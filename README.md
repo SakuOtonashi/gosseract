@@ -22,7 +22,9 @@
 
 ### 安装依赖
 
-`[vcpkg root]/vcpkg install tesseract:x64-windows`
+- [tesseract](https://github.com/tesseract-ocr/tesseract) 和 [leptonica](https://github.com/DanBloomberg/leptonica) 构建依赖于 [sw](https://github.com/SoftwareNetwork/sw)，请提前配置完成
+
+- `[vcpkg root]/vcpkg install tesseract:x64-windows`
 
 ### 构建相关
 
