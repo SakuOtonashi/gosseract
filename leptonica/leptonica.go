@@ -1,6 +1,7 @@
 package leptonica
 
 /*
+#cgo linux LDFLAGS: -L/usr/lib/x86_64-linux-gnu
 #cgo pkg-config: lept
 
 #include <stdlib.h>
@@ -57,23 +58,9 @@ func (pix *Pix) Destroy() {
 	C.pixDestroy(&p)
 }
 
-func PixRead(filename string) (*Pix, error) {
-	if filename == "" {
-		return nil, errors.New("filename is empty")
-	}
-	fn := C.CString(filename)
-	defer C.free(unsafe.Pointer(fn))
-
-	pix := C.pixRead(fn)
-	if pix == nil {
-		return nil, errors.New("pixRead failed")
-	}
-	return (*Pix)(pix), nil
-}
-
 func PixReadMem(data []byte) (*Pix, error) {
 	d := (*C.uchar)(unsafe.Pointer(&data[0]))
-	l := C.ulonglong(len(data))
+	l := C.size_t(len(data))
 	pix := C.pixReadMem(d, l)
 	if pix == nil {
 		return nil, errors.New("pixReadMem failed")

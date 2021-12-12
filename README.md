@@ -8,17 +8,17 @@
 
 ### 安装 vcpkg
 
-参考 [vcpkg](https://github.com/microsoft/vcpkg)
-
-### 安装 pkg-config
-
-- `[vcpkg root]/vcpkg install pkgconf:x64-windows`
-
-- 添加环境变量 `PKG_CONFIG_PATH` = `[vcpkg root]/installed/x64-windows/lib/pkgconfig`
+- 参考 [vcpkg](https://github.com/microsoft/vcpkg)
 
 - 环境变量 `Path` 增加路径 `[vcpkg root]/installed/x64-windows/bin`
 
-- 配置 go 环境 `go env -w PKG_CONFIG="[vcpkg root]/installed/x64-windows/tools/pkgconf/pkgconf"`
+### 安装 pkg-config
+
+- Linux 直接安装 pkg-config，Windows 下用使用 `[vcpkg root]/vcpkg install pkgconf:x64-windows`
+
+- 配置 go 环境（Linux不用配置） `go env -w PKG_CONFIG="[vcpkg root]/installed/x64-windows/tools/pkgconf/pkgconf"`
+
+- 添加环境变量 `PKG_CONFIG_PATH` = `[vcpkg root]/installed/x64-windows/lib/pkgconfig`
 
 ### 安装依赖
 

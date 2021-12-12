@@ -1,6 +1,7 @@
 package tesseract
 
 /*
+#cgo linux LDFLAGS: -L/usr/lib/x86_64-linux-gnu
 #cgo pkg-config: tesseract
 
 #include <stdlib.h>

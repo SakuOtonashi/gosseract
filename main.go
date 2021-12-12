@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/SakuOtonashi/gosseract/leptonica"
@@ -43,16 +42,9 @@ func (ocr ocrApi) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		rw.Write([]byte("can't parse body: " + err.Error()))
 		return
 	}
+	v.Language = strings.ToLower(v.Language)
 
-	// 直接使用路径的话需要处理编码问题 utf8 -> gbk
-	// image, err := leptonica.PixRead(v.ImagePath)
-	data, err := os.ReadFile(v.ImagePath)
-	if err != nil {
-		rw.WriteHeader(400)
-		rw.Write([]byte("can't read file: " + err.Error()))
-		return
-	}
-	image, err := leptonica.PixReadMem(data)
+	image, err := leptonica.PixRead(v.ImagePath)
 	if err != nil {
 		rw.WriteHeader(400)
 		rw.Write([]byte("can't read image: " + err.Error()))
@@ -62,6 +54,8 @@ func (ocr ocrApi) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	api := tesseract.NewTessBaseAPI()
 	defer api.Delete()
+	// 模型数据在Linux下不会读取当前目录，暂时不处理
+	// 需要指定模型数据的路径，否则会读取默认人路径或环境变量 TESSDATA_PREFIX
 	err = api.Init3("", v.Language)
 	if err != nil {
 		rw.WriteHeader(500)
@@ -102,6 +96,7 @@ func (ocr ocrApi) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	for _, data := range outData {
 		fmt.Println("得分: ", data.Conf, "\n文字: ", data.Words)
 	}
+	fmt.Println("")
 
 	res := ocrApiResponse{
 		Code:      0,
